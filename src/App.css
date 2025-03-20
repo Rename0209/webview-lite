@@ -17,6 +17,21 @@
   margin-bottom: 2rem;
 }
 
+.security-warning {
+  background-color: #442222;
+  border: 1px solid #ff0000;
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  color: #ff0000;
+}
+
+.security-note {
+  color: #ffaaaa;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
 .request-info {
   background-color: #282c34;
   border-radius: 4px;

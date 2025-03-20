@@ -6,6 +6,7 @@ function App() {
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
   const [decryptedToken, setDecryptedToken] = useState('');
+  const [securityWarning, setSecurityWarning] = useState('');
   
   useEffect(() => {
     try {
@@ -15,6 +16,12 @@ function App() {
       
       if (!token) {
         setError('No token found in URL parameters');
+        return;
+      }
+
+      // Check for potential security issues
+      if (window.location.href.includes('facebook.com')) {
+        setSecurityWarning('Warning: This application cannot load Facebook content due to security restrictions.');
         return;
       }
 
@@ -47,7 +54,8 @@ function App() {
       'Origin:': window.location.origin,
       'Referrer:': document.referrer,
       'User Agent:': navigator.userAgent,
-      'Decrypted Token:': decryptedToken || 'Not available'
+      'Decrypted Token:': decryptedToken || 'Not available',
+      'Security Status:': securityWarning || 'No security issues detected'
     };
   };
 
@@ -55,6 +63,14 @@ function App() {
     <div className="App">
       <div className="error-container">
         {error && <div className="error-message">Error: {error}</div>}
+        {securityWarning && (
+          <div className="security-warning">
+            {securityWarning}
+            <p className="security-note">
+              Note: For security reasons, certain websites (like Facebook) cannot be loaded in this viewer.
+            </p>
+          </div>
+        )}
         <div className="request-info">
           {Object.entries(getRequestInfo()).map(([key, value]) => (
             <div key={key} className="info-row">
