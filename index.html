@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger WebView - Lấy PSID</title>
+</head>
+<body>
+    <h2>Facebook Messenger WebView</h2>
+    <p id="user-info">Đang lấy thông tin người dùng...</p>
+
+    <script>
+        // Hàm lấy PSID bằng callback
+        function layPSID() {
+            const appId = "415798671014705"; // Thay bằng App ID của bạn
+
+            MessengerExtensions.getContext(appId, 
+                function thanhCong(response) { // Callback khi thành công
+                    console.log("PSID:", response.psid);
+                    document.getElementById("user-info").innerText = "PSID của bạn: " + response.psid;
+                }, 
+                function loi(error) { // Callback khi có lỗi
+                    console.error("Không thể lấy PSID:", error);
+                    document.getElementById("user-info").innerText = "Không thể lấy PSID!";
+                }
+            );
+        }
+
+        // Khi Messenger Extensions SDK tải xong, chạy hàm lấy PSID
+        window.extAsyncInit = function() {
+            layPSID();
+        };
+    </script>
+
+    <!-- Tải Messenger Extensions SDK -->
+    <script src="https://connect.facebook.net/en_US/messenger.Extensions.js"></script>
+</body>
+</html>

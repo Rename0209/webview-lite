@@ -1,0 +1,50 @@
+.App {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-header form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.App-header input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.App-header button {
+  padding: 8px 16px;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 4px;
+  color: #282c34;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.App-header button:hover {
+  background-color: #4fa8c7;
+}
+
+webview {
+  flex: 1;
+  border: none;
+} 
