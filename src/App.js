@@ -7,18 +7,25 @@ function App() {
   const [error, setError] = useState('');
   const [decryptedToken, setDecryptedToken] = useState('');
   const [securityWarning, setSecurityWarning] = useState('');
+  const [originalToken, setOriginalToken] = useState('');
   
   useEffect(() => {
     try {
       // Get token from URL
       const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
+      const encodedToken = urlParams.get('token');
       
-      if (!token) {
+      if (!encodedToken) {
         setError('No token found in URL parameters');
         return;
       }
 
+      // Store the original token
+      setOriginalToken(encodedToken);
+
+      // Decode the URL-encoded token
+      const decodedToken = decodeURIComponent(encodedToken);
+      
       // Check for potential security issues
       if (window.location.href.includes('facebook.com')) {
         setSecurityWarning('Warning: This application cannot load Facebook content due to security restrictions.');
@@ -27,8 +34,9 @@ function App() {
 
       // Decrypt token
       const secretKey = 'superkeyahafood1';
+      
       // Convert base64 token to bytes
-      const tokenBytes = CryptoJS.enc.Base64.parse(token);
+      const tokenBytes = CryptoJS.enc.Base64.parse(decodedToken);
       
       // Decrypt using AES-ECB with PKCS5Padding
       const decrypted = CryptoJS.AES.decrypt(
@@ -41,16 +49,24 @@ function App() {
       );
       
       const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+      
+      if (!decryptedText) {
+        throw new Error('Decryption resulted in empty string');
+      }
+      
       setDecryptedToken(decryptedText);
       setError('');
     } catch (err) {
       setError('Error decrypting token: ' + err.message);
+      console.error('Decryption error:', err);
     }
   }, []);
 
   const getRequestInfo = () => {
     return {
       'URL parameters:': window.location.search,
+      'Original Token:': originalToken || 'Not available',
+      'Decoded Token:': originalToken ? decodeURIComponent(originalToken) : 'Not available',
       'Origin:': window.location.origin,
       'Referrer:': document.referrer,
       'User Agent:': navigator.userAgent,
